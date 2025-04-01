@@ -36,9 +36,9 @@ function App() {
   }
 
   // Modifying Task
-  const handleDeleteTask = (index: number) => {
-    setTasks(tasks.filter((_, i) => i !== index));
-  }
+  const handleDeleteTask = (taskToDelete: TaskProps) => {
+    setTasks(tasks.filter(task => task !== taskToDelete));
+  };
   const handleMarkTaskDone = (index: number) => {
     setTasks(tasks.map((item, i) => 
       i === index ? {...item, status: "done"} : item
@@ -111,7 +111,7 @@ function App() {
                         onClick={() => handleMarkTaskUnDone(index)}
                       >Mark as UnDone</button>
                       <button className="btn btn-danger"
-                        onClick={() => handleDeleteTask(index)}
+                        onClick={() => handleDeleteTask(item)}
                       >Delete</button>
                     </div>
                   </div>
@@ -137,7 +137,7 @@ function App() {
                       onClick={() => handleMarkTaskDone(index)}
                     >Mark as Done</button>
                     <button className="btn btn-danger"
-                      onClick={() => handleDeleteTask(index)}
+                      onClick={() => handleDeleteTask(item)}
                     >Delete</button>
                   </div>
                 </div>
