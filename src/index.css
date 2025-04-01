@@ -1,0 +1,95 @@
+:root {
+    --color-darker-green: #0d2818;
+    --color-dark-green: #04471c;
+    --color-green: #058c42;
+    --color-light-green: #16db65; /* Dark Text */
+}
+
+body {
+    background-color: black;
+}
+
+.hero-section {
+    background: var(--color-darker-green);
+    color: white;
+    padding: 4rem;
+}
+
+.main-content {
+    padding: 4rem;
+    background: var(--color-dark-green);
+    color: white;
+}
+
+.task-adder {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.task-title-input {
+    flex: 0 0 20%;
+}
+
+.task-card {
+    background: var(--color-green);
+    border-radius: 8px;
+    padding: 2rem;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+    transition: 0.3s;
+}
+
+span {
+    white-space: pre-wrap;
+}
+
+.task-card:hover {
+    box-shadow: 2px 2px 8px rgba(0, 0, 0);
+}
+
+.task-list {
+    background: var(--color-dark-green);
+    color: white;
+    padding: 4rem;
+}
+
+.task-done {
+    background: var(--color-darker-green);
+    color: white;
+    padding: 4rem;
+}
+
+.task-list-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.task-clear {
+    background: var(--color-darker-green);
+    color: white;
+    padding: 4rem;
+}
+
+.task-card-buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+
+.task-card-buttons > button {
+    flex: 1;
+}
+
+textarea {
+    resize: none;
+}
+
+@media (max-width: 768px) {
+    .hero-section, .main-content, .task-list, .task-done {
+        padding: 2rem;
+    }
+    .task-card {
+        padding: 1rem;
+    }
+}
