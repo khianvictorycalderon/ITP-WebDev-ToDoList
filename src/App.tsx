@@ -39,16 +39,16 @@ function App() {
   const handleDeleteTask = (taskToDelete: TaskProps) => {
     setTasks(tasks.filter(task => task !== taskToDelete));
   };
-  const handleMarkTaskDone = (index: number) => {
-    setTasks(tasks.map((item, i) => 
-      i === index ? {...item, status: "done"} : item
+  const handleMarkTaskDone = (taskToUpdate: TaskProps) => {
+    setTasks(tasks.map(task => 
+      task === taskToUpdate ? { ...task, status: "done" } : task
     ));
-  }
-  const handleMarkTaskUnDone = (index: number) => {
-    setTasks(tasks.map((item, i) => 
-      i === index ? {...item, status: "pending"} : item
+  };
+  const handleMarkTaskUnDone = (taskToUpdate: TaskProps) => {
+    setTasks(tasks.map(task => 
+      task === taskToUpdate ? { ...task, status: "pending" } : task
     ));
-  }
+  };
 
   // Task Deletion
   const handleDeleteAllTasks = () => {
@@ -108,7 +108,7 @@ function App() {
                     <hr/>
                     <div className="task-card-buttons">
                       <button className="btn btn-secondary"
-                        onClick={() => handleMarkTaskUnDone(index)}
+                        onClick={() => handleMarkTaskUnDone(item)}
                       >Mark as UnDone</button>
                       <button className="btn btn-danger"
                         onClick={() => handleDeleteTask(item)}
@@ -134,7 +134,7 @@ function App() {
                   <hr/>
                   <div className="task-card-buttons">
                     <button className="btn btn-primary"
-                      onClick={() => handleMarkTaskDone(index)}
+                      onClick={() => handleMarkTaskDone(item)}
                     >Mark as Done</button>
                     <button className="btn btn-danger"
                       onClick={() => handleDeleteTask(item)}
