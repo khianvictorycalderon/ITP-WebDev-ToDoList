@@ -7,6 +7,7 @@ export const colorGreen = "#058c42";
 export const colorLightGreen = "#16db65"; // Dark Text
 
 interface TaskProps {
+  id: string;
   title: string;
   description: string;
   status: "done" | "pending";
@@ -20,9 +21,21 @@ function App() {
     return savedTasks ? JSON.parse(savedTasks) : []; // Parse if exists, else empty array
   });
 
+  // Generating Unique ID
+  function generateUniqueID(existingIds: string[]): string {
+    let id: string;
+    do {
+      const randomPart = Math.floor(Math.random() * 36 ** 8).toString(36).toUpperCase(); // 8-character random string
+      const timePart = Date.now().toString(36).toUpperCase(); // Timestamp in base-36
+      id = `${randomPart}${timePart}`; // Combine both
+    } while (existingIds.includes(id)); // Ensure uniqueness
+    return id;
+  }  
+  
   // Saving Task
   useEffect(() => {
     localStorage.setItem("ToDoTasks", JSON.stringify(tasks));
+    console.log(tasks); // for debugging purpose
   }, [tasks]);
   
   // Adding New Task
@@ -30,23 +43,32 @@ function App() {
   const [taskDesc, setTaskDesc] = useState<string>("");
   const handleAddNewTask = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // Prevent page refresh
-    setTasks(prev => [...prev, {title: taskName, description: taskDesc, status: "pending"}]);
+    setTasks(prev => [...prev, {
+      id: generateUniqueID(prev.map(task => task.id)), // Now modular!
+      title: taskName, 
+      description: taskDesc, 
+      status: "pending"
+    }]);
     setTaskName("");
     setTaskDesc("");
   }
 
-  // Modifying Task
-  const handleDeleteTask = (taskToDelete: TaskProps) => {
-    setTasks(tasks.filter(task => task !== taskToDelete));
+  // Delete a single task by ID
+  const handleDeleteTask = (id: string) => {
+    setTasks(tasks.filter(task => task.id !== id));
   };
-  const handleMarkTaskDone = (taskToUpdate: TaskProps) => {
+
+  // Mark a task as Done by ID
+  const handleMarkTaskDone = (id: string) => {
     setTasks(tasks.map(task => 
-      task === taskToUpdate ? { ...task, status: "done" } : task
+      task.id === id ? { ...task, status: "done" } : task
     ));
   };
-  const handleMarkTaskUnDone = (taskToUpdate: TaskProps) => {
+
+  // Mark a task as UnDone by ID
+  const handleMarkTaskUnDone = (id: string) => {
     setTasks(tasks.map(task => 
-      task === taskToUpdate ? { ...task, status: "pending" } : task
+      task.id === id ? { ...task, status: "pending" } : task
     ));
   };
 
@@ -108,10 +130,10 @@ function App() {
                     <hr/>
                     <div className="task-card-buttons">
                       <button className="btn btn-secondary"
-                        onClick={() => handleMarkTaskUnDone(item)}
+                        onClick={() => handleMarkTaskUnDone(item.id)}
                       >Mark as UnDone</button>
                       <button className="btn btn-danger"
-                        onClick={() => handleDeleteTask(item)}
+                        onClick={() => handleDeleteTask(item.id)}
                       >Delete</button>
                     </div>
                   </div>
@@ -134,10 +156,10 @@ function App() {
                   <hr/>
                   <div className="task-card-buttons">
                     <button className="btn btn-primary"
-                      onClick={() => handleMarkTaskDone(item)}
+                      onClick={() => handleMarkTaskDone(item.id)}
                     >Mark as Done</button>
                     <button className="btn btn-danger"
-                      onClick={() => handleDeleteTask(item)}
+                      onClick={() => handleDeleteTask(item.id)}
                     >Delete</button>
                   </div>
                 </div>
